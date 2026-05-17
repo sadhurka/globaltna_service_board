@@ -1,7 +1,7 @@
 // seed.js
-// If .env is in the same folder as seed.js, use './.env'. If seed.js is in a subfolder like /scripts, leave it as '../.env'
+// Resolve .env relative to the current file directory to ensure correct loading regardless of from where Node was launched
 const path = require('path');
-require('dotenv').config({ path: path.resolve(process.cwd(), '.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const mongoose = require('mongoose');
 const JobRequest = require('./models/JobRequest');
 

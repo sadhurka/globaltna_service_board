@@ -1,6 +1,6 @@
 const path = require('path');
-// Uses process.cwd() to consistently point to the backend directory, resolving the .env loading bug
-require('dotenv').config({ path: path.resolve(process.cwd(), '.env') });
+// Resolve .env relative to the current file directory to ensure correct loading regardless of from where Node was launched
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const express = require('express');
 const cors = require('cors');
@@ -15,7 +15,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Sanitize and normalize duplicate slashes in request URL path (e.g., //api/jobs -> /api/jobs)
+app.use((req, res, next) => {
+  if (req.url.includes('//')) {
+    req.url = req.url.replace(/\/\/+/g, '/');
+  }
+  next();
+});
+
 // Routes
+app.get('/', (_req, res) => res.json({
+  success: true,
+  message: 'GlobalTNA Service Request Board API is running',
+  version: '1.0.0',
+  endpoints: {
+    health: '/health',
+    auth: '/api/auth/login',
+    jobs: '/api/jobs'
+  }
+}));
+app.get('/favicon.ico', (_req, res) => res.status(204).end());
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 app.use('/api/auth', authRouter); // Exposes POST /api/auth/login
 app.use('/api/jobs', jobsRouter);  // Exposes REST endpoints for job requests

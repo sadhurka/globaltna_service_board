@@ -143,6 +143,10 @@ router.put('/:id', protect, async (req, res, next) => {
 
     res.json({ success: true, data: job });
   } catch (err) {
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map((e) => e.message);
+      return res.status(400).json({ success: false, message: messages.join('; ') });
+    }
     if (err.name === 'CastError') {
       return res.status(404).json({ success: false, message: 'Job not found' });
     }
