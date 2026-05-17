@@ -2,6 +2,8 @@
 
 A full-stack web application designed for homeowners to post service requests and tradespeople to manage them.
 
+🚀 **Live Deployed Demo**: [globaltna-service-board-chi.vercel.app](https://globaltna-service-board-chi.vercel.app/)
+
 ---
 
 ## 🔗 Dedicated Repositories
