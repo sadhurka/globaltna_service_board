@@ -36,6 +36,27 @@ app.get('/', (_req, res) => res.json({
 }));
 app.get('/favicon.ico', (_req, res) => res.status(204).end());
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
+// Database connection and server start configuration
+const PORT = process.env.PORT || 5000;
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/globaltna';
+
+// Database connection middleware for Serverless/Vercel (checks readyState before each request)
+app.use(async (req, res, next) => {
+  if (mongoose.connection.readyState >= 1) {
+    return next();
+  }
+
+  try {
+    console.log('Connecting to MongoDB...');
+    await mongoose.connect(MONGODB_URI);
+    console.log('✅  MongoDB connected');
+    next();
+  } catch (err) {
+    console.error('❌  MongoDB connection error:', err.message);
+    res.status(500).json({ success: false, message: 'Database connection failed' });
+  }
+});
+
 app.use('/api/auth', authRouter); // Exposes POST /api/auth/login
 app.use('/api/jobs', jobsRouter);  // Exposes REST endpoints for job requests
 
@@ -50,20 +71,6 @@ app.use((err, _req, res, _next) => {
   console.error(err.stack);
   res.status(500).json({ success: false, message: 'Internal server error' });
 });
-
-// Database connection and server start
-const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/globaltna';
-
-console.log('Connecting to:', MONGODB_URI);
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => {
-    console.log('✅  MongoDB connected');
-  })
-  .catch((err) => {
-    console.error('❌  MongoDB connection error:', err.message);
-  });
 
 if (require.main === module) {
   app.listen(PORT, () => console.log(`🚀  API running on http://localhost:${PORT}`));
