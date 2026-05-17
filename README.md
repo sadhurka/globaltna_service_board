@@ -21,9 +21,11 @@ To run the application locally, verify or configure the `.env` files in both the
 * **`PORT`** — The port the backend server runs on (Default: `5000`)
 * **`MONGODB_URI`** — Your MongoDB connection string.
   * *Live Atlas Sandbox Database String:* 
-    ```text
+
+    ```bash
    mongodb://<username>:<password>@ac-eutd3lz-shard-00-00.vry2zue.mongodb.net:27017,ac-eutd3lz-shard-00-01.vry2zue.mongodb.net:27017,ac-eutd3lz-shard-00-02.vry2zue.mongodb.net:27017/?ssl=true&replicaSet=atlas-qhpmpj-shard-0&authSource=admin&appName=Cluster0
     ```
+    
   * *Credentials:* Username: `user1` | Password: `user1`
 * **`ADMIN_PASSWORD`** — The admin passcode to manage job posts (Default: `1111`)
 
