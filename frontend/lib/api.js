@@ -1,5 +1,8 @@
 const BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
+// Clean the base URL by stripping any trailing slashes to prevent duplicate slashes
+const cleanBase = BASE.replace(/\/+$/, '');
+
 async function apiFetch(path, options = {}) {
   // Safely extract token from window storage environment
   const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
@@ -13,7 +16,10 @@ async function apiFetch(path, options = {}) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${BASE}${path}`, { ...options, headers });
+  // Ensure the requested endpoint starts with a single slash
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+
+  const res = await fetch(`${cleanBase}${cleanPath}`, { ...options, headers });
   const data = await res.json();
   if (!res.ok) {
     throw new Error(data.message || 'API error');
