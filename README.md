@@ -3,28 +3,38 @@
 A full-stack web application designed for homeowners to post service requests and tradespeople to manage them.
 
 ---
-seperated github repositories to track commits 
 
-backend : https://github.com/sadhurka/backend
-frontend : https://github.com/sadhurka/frontend
+## 🔗 Dedicated Repositories
+
+To track commits and codebases independently, the project is separated into two dedicated sub-repositories:
+
+* 🖥️ **Frontend App**: [github.com/sadhurka/frontend](https://github.com/sadhurka/frontend)
+* ⚙️ **Backend API**: [github.com/sadhurka/backend](https://github.com/sadhurka/backend)
+
+---
 
 ## 🔑 Required Environment Variables
 
-To run the application, verify or configure the `.env` files in both the `backend/` and `frontend/` directories:
+To run the application locally, verify or configure the `.env` files in both the `backend/` and `frontend/` directories:
 
-### 1. Backend (`backend/.env`)
-- `PORT` — The port the backend server runs on (Default: `5000`)
-- `MONGODB_URI` — Input your own MongoDB Atlas connection string or local database URL here (`mongodb://user1:<password>@ac-eutd3lz-shard-00-00.vry2zue.mongodb.net:27017,ac-eutd3lz-shard-00-01.vry2zue.mongodb.net:27017,ac-eutd3lz-shard-00-02.vry2zue.mongodb.net:27017/?ssl=true&replicaSet=atlas-qhpmpj-shard-0&authSource=admin&appName=Cluster0`) (username:user1 , password:user1)
-- `ADMIN_PASSWORD` — The admin password to create or manage job posts (Default: `1111`)
+### 1. Backend Configuration (`backend/.env`)
+* **`PORT`** — The port the backend server runs on (Default: `5000`)
+* **`MONGODB_URI`** — Your MongoDB connection string.
+  * *Live Atlas Sandbox Database String:* 
+    ```text
+   mongodb://<username>:<password>@ac-eutd3lz-shard-00-00.vry2zue.mongodb.net:27017,ac-eutd3lz-shard-00-01.vry2zue.mongodb.net:27017,ac-eutd3lz-shard-00-02.vry2zue.mongodb.net:27017/?ssl=true&replicaSet=atlas-qhpmpj-shard-0&authSource=admin&appName=Cluster0
+    ```
+  * *Credentials:* Username: `user1` | Password: `user1`
+* **`ADMIN_PASSWORD`** — The admin passcode to manage job posts (Default: `1111`)
 
-### 2. Frontend (`frontend/.env`)
-- `NEXT_PUBLIC_API_URL` — The API URL of the backend server (Default: `http://localhost:5000`)
+### 2. Frontend Configuration (`frontend/.env`)
+* **`NEXT_PUBLIC_API_URL`** — The connection URL of the running backend Express API (Default: `http://localhost:5000`)
 
 ---
 
 ## 🛠️ Setup & Run Instructions
 
-Ensure you have **Node.js (v18 or higher)** installed on your machine.
+Ensure you have **Node.js (v18 or higher)** installed.
 
 ### Step 1: Start the Backend Server
 ```bash
@@ -48,7 +58,7 @@ Once both servers are running, open **[http://localhost:3000](http://localhost:3
 
 ## 🧪 Running Tests
 
-To run the integration endpoint tests:
+To run the integrated Express endpoint suite:
 ```bash
 cd backend
 npm test
@@ -56,14 +66,16 @@ npm test
 
 ---
 
-## 📡 API Endpoints
+## 📡 API Endpoints Reference
 
 All endpoints use `http://localhost:5000` as their base URL.
 
-- **`POST` `/api/auth/login`** — Validate admin password and get session token
-- **`GET` `/api/jobs`** — List all jobs (Supports filters: `?category=`, `?status=`, `?search=`)
-- **`GET` `/api/jobs/:id`** — Get a single job's details
-- **`POST` `/api/jobs`** — Create a new job post (Requires Admin Bearer Token)
-- **`PATCH` `/api/jobs/:id`** — Update job status (`Open`, `In Progress`, `Closed`)
-- **`PUT` `/api/jobs/:id`** — Edit all job details (Requires Admin Bearer Token)
-- **`DELETE` `/api/jobs/:id`** — Delete a job post permanently
+| Method | Endpoint | Authentication | Description |
+| :--- | :--- | :--- | :--- |
+| **`POST`** | `/api/auth/login` | None | Authenticate admin passcode and receive session token. |
+| **`GET`** | `/api/jobs` | None | Fetch all jobs (Supports filters: `?category=`, `?status=`, `?search=`). |
+| **`GET`** | `/api/jobs/:id` | None | Fetch details of a single job post. |
+| **`POST`** | `/api/jobs` | **Admin Token** | Create a new homeowner service request. |
+| **`PATCH`** | `/api/jobs/:id` | None | Update job status (`Open` ➡️ `In Progress` ➡️ `Closed`). |
+| **`PUT`** | `/api/jobs/:id` | **Admin Token** | Edit all fields of a job post. |
+| **`DELETE`** | `/api/jobs/:id` | None | Delete a job post permanently from the board. |
