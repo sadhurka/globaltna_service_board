@@ -34,7 +34,6 @@ app.get('/', (_req, res) => res.json({
     jobs: '/api/jobs'
   }
 }));
-app.get('/favicon.ico', (_req, res) => res.status(204).end());
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 // Database connection and server start configuration
 const PORT = process.env.PORT || 5000;
