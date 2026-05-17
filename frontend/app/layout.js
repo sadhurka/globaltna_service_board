@@ -23,6 +23,9 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="data:;base64,=" />
+      </head>
       <body>
         <nav className="nav">
           <Link href="/" className="nav-brand">
